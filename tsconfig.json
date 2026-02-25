@@ -1,0 +1,11 @@
+{
+	"references": [
+		{
+			"path": "./packages/deque"
+		},
+		{
+			"path": "./packages/binary-heap"
+		}
+	],
+	"files": []
+}

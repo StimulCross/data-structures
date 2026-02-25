@@ -1,0 +1,54 @@
+{
+	"name": "@stimulcross/ds-deque",
+	"version": "0.0.0",
+	"description": "Dequeue implementation for TypeScript.",
+	"keywords": [
+		"deque"
+	],
+	"author": "StimulCross <stimulcross@gmail.com>",
+	"license": "MIT",
+	"homepage": "https://github.com/StimulCross/data-structures/tree/main/packages/deque#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/StimulCross/data-structures.git",
+		"directory": "packages/deque"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"type": "module",
+	"sideEffects": false,
+	"main": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"default": "./lib/index.js"
+		}
+	},
+	"packageManager": "pnpm@10.28.0",
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"rebuild": "pnpm run clean && pnpm run build",
+		"clean": "del-cli lib *.tsbuildinfo",
+		"lint": "eslint src tests",
+		"lint:fix": "eslint src tests --fix",
+		"format:check": "prettier --check src",
+		"format:fix": "prettier --write src",
+		"check-types": "tsc -p tsconfig.json --noEmit"
+	},
+	"files": [
+		"LICENSE",
+		"README.md",
+		"lib",
+		"!lib/**/*.d.ts.map",
+		"!lib/**/*.js.map"
+	],
+	"devDependencies": {
+		"eslint-config": "workspace:*",
+		"typescript-config": "workspace:*"
+	}
+}

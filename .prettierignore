@@ -1,0 +1,4 @@
+docs
+packages/*/es
+packages/*/cjs
+lerna.json
