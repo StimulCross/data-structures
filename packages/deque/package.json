@@ -1,6 +1,6 @@
 {
 	"name": "@stimulcross/ds-deque",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Dequeue implementation for TypeScript.",
 	"keywords": [
 		"deque"
