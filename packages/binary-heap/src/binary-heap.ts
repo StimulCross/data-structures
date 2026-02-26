@@ -1,4 +1,9 @@
-export type CompareFn<T> = (a: T, b: T) => number;
+/**
+ * Comparator function for sorting items in a binary heap.
+ *
+ * @template T The type of items to compare.
+ */
+export type Comparator<T> = (a: T, b: T) => number;
 
 /**
  * Binary heap implementation.
@@ -7,11 +12,11 @@ export type CompareFn<T> = (a: T, b: T) => number;
  */
 export class BinaryHeap<T = number> {
 	private readonly _data: T[] = [];
-	private readonly _compare: CompareFn<T>;
+	private readonly _comparator: Comparator<T>;
 
-	constructor(compare?: CompareFn<T>) {
+	constructor(compare?: Comparator<T>) {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		this._compare = compare ?? ((a, b) => (b as any) - (a as any));
+		this._comparator = compare ?? ((a, b) => (b as any) - (a as any));
 	}
 
 	/**
@@ -20,10 +25,10 @@ export class BinaryHeap<T = number> {
 	 * Complexity: **O(n)**.
 	 *
 	 * @param iterable The iterable to create the heap from.
-	 * @param compare The comparison function. Defaults to descending order.
+	 * @param comparator The comparison function. Defaults to descending order.
 	 */
-	public static from<T>(iterable: Iterable<T>, compare?: CompareFn<T>): BinaryHeap<T> {
-		const heap = new BinaryHeap<T>(compare);
+	public static from<T>(iterable: Iterable<T>, comparator?: Comparator<T>): BinaryHeap<T> {
+		const heap = new BinaryHeap<T>(comparator);
 
 		for (const value of iterable) {
 			heap._data.push(value);
@@ -112,7 +117,7 @@ export class BinaryHeap<T = number> {
 
 		const top = this._data[0];
 
-		if (this._compare(value, top) < 0) {
+		if (this._comparator(value, top) < 0) {
 			return value;
 		}
 
@@ -176,7 +181,7 @@ export class BinaryHeap<T = number> {
 		while (currentIdx > 0) {
 			const parentIdx = this._getParent(currentIdx);
 
-			if (this._compare(this._data[currentIdx], this._data[parentIdx]) >= 0) {
+			if (this._comparator(this._data[currentIdx], this._data[parentIdx]) >= 0) {
 				break;
 			}
 
@@ -194,11 +199,11 @@ export class BinaryHeap<T = number> {
 			const rightIdx = this._getRight(currentIdx);
 			let best = currentIdx;
 
-			if (leftIdx < size && this._compare(this._data[leftIdx], this._data[best]) < 0) {
+			if (leftIdx < size && this._comparator(this._data[leftIdx], this._data[best]) < 0) {
 				best = leftIdx;
 			}
 
-			if (rightIdx < size && this._compare(this._data[rightIdx], this._data[best]) < 0) {
+			if (rightIdx < size && this._comparator(this._data[rightIdx], this._data[best]) < 0) {
 				best = rightIdx;
 			}
 

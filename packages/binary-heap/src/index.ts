@@ -1,1 +1,1 @@
-export { BinaryHeap, type CompareFn } from './binary-heap.js';
+export { BinaryHeap, type Comparator } from './binary-heap.js';
