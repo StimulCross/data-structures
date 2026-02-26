@@ -23,6 +23,22 @@ describe('Deque', () => {
 	});
 
 	describe('Static from', () => {
+		it('should handle empty iterables', () => {
+			const deque = Deque.from([]);
+			expect(deque.isEmpty).toBe(true);
+			expect(deque.peekHead()).toBeUndefined();
+			expect(deque.peekTail()).toBeUndefined();
+
+			const deque2 = Deque.from(new Set());
+			expect(deque2.isEmpty).toBe(true);
+			expect(deque2.peekHead()).toBeUndefined();
+
+			const deque3 = Deque.from(new Map());
+			expect(deque3.isEmpty).toBe(true);
+			expect(deque3.peekHead()).toBeUndefined();
+			expect(deque3.peekTail()).toBeUndefined();
+		});
+
 		it('should create a valid Dequeue from an array', () => {
 			const values = [3, 8, 1, 5, 10, 2];
 			const deque = Deque.from(values);
@@ -32,29 +48,82 @@ describe('Deque', () => {
 			expect(deque.shift()).toBe(3);
 		});
 
-		it('should create a valid heap from a Set', () => {
+		it('should preallocate capacity based on array length (next power of two)', () => {
+			const values = [1, 2, 3, 4, 5];
+			const deque = Deque.from(values);
+
+			expect(deque.size).toBe(5);
+			expect(deque.capacity).toBe(8);
+			expect(deque.toArray()).toEqual([1, 2, 3, 4, 5]);
+		});
+
+		it('should create a valid deque from a Set', () => {
 			const values = new Set([5, 3, 8]);
 			const deque = Deque.from(values);
 
 			expect(deque.size).toBe(3);
+			expect(deque.capacity).toBe(4);
 			expect(deque.pop()).toBe(8);
 			expect(deque.shift()).toBe(5);
 		});
 
-		it('should handle empty iterables', () => {
-			const deque = Deque.from([]);
-
-			expect(deque.isEmpty).toBe(true);
-			expect(deque.peekHead()).toBeUndefined();
-			expect(deque.peekTail()).toBeUndefined();
-		});
-
-		it('should work with a custom comparator', () => {
-			const values = [5, 3, 8, 1];
+		it('should preallocate capacity based on Set size (next power of two)', () => {
+			const values = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 			const deque = Deque.from(values);
 
-			expect(deque.pop()).toBe(1);
-			expect(deque.shift()).toBe(5);
+			expect(deque.size).toBe(9);
+			expect(deque.capacity).toBe(16);
+		});
+
+		it('should create a valid deque from a Map (iterates values)', () => {
+			const values = new Map<string, number>([
+				['a', 1],
+				['b', 2],
+				['c', 3],
+			]);
+
+			const deque = Deque.from(values);
+
+			expect(deque.size).toBe(3);
+			expect(deque.capacity).toBe(4);
+			expect(deque.toArray()).toEqual([1, 2, 3]);
+		});
+
+		it('should preallocate capacity based on Map size (next power of two)', () => {
+			const values = new Map<string, number>([
+				['a', 1],
+				['b', 2],
+				['c', 3],
+				['d', 4],
+				['e', 5],
+				['f', 6],
+				['g', 7],
+				['h', 8],
+				['i', 9],
+			]);
+
+			const deque = Deque.from(values);
+
+			expect(deque.size).toBe(9);
+			expect(deque.capacity).toBe(16);
+			expect(deque.toArray()).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+		});
+
+		it('should create a valid deque from a custom iterable', () => {
+			const iterable = {
+				[Symbol.iterator]: function* () {
+					for (let i = 1; i <= 20; i++) {
+						yield i;
+					}
+				},
+			};
+
+			const expected = [...iterable];
+			const deque = Deque.from(iterable);
+
+			expect(deque.size).toBe(20);
+			expect(deque.capacity).toBe(32);
+			expect(deque.toArray()).toEqual(expected);
 		});
 	});
 

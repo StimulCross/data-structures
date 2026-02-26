@@ -40,10 +40,23 @@ export class Deque<T> {
 	/**
 	 * Creates a deque instance from an iterable.
 	 *
+	 * Note: If iterable is a `Map`, the deque is created from `map.values()`.
+	 *
 	 * @param iterable The iterable to create the deque from.
 	 */
 	public static from<T>(iterable: Iterable<T>): Deque<T> {
-		const deque = new Deque<T>();
+		let deque: Deque<T>;
+
+		if (Array.isArray(iterable)) {
+			deque = new Deque<T>(nextPowerOfTwo32(iterable.length));
+		} else if (iterable instanceof Set || iterable instanceof Deque) {
+			deque = new Deque<T>(nextPowerOfTwo32(iterable.size));
+		} else if (iterable instanceof Map) {
+			deque = new Deque<T>(nextPowerOfTwo32(iterable.size));
+			iterable = iterable.values();
+		} else {
+			deque = new Deque<T>();
+		}
 
 		for (const item of iterable) {
 			deque.push(item);
