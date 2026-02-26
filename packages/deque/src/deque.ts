@@ -203,38 +203,37 @@ export class Deque<T> {
 			const idx = (this._head + i) & this._mask;
 
 			if (this._buffer[idx] === value) {
-				const leftCount = i;
-				const rightCount = this._size - 1 - i;
-
-				if (leftCount <= rightCount) {
-					for (let j = i; j > 0; j--) {
-						const from = (this._head + j - 1) & this._mask;
-						const to = (this._head + j) & this._mask;
-
-						this._buffer[to] = this._buffer[from];
-					}
-
-					this._buffer[this._head] = undefined;
-					this._head = (this._head + 1) & this._mask;
-				} else {
-					for (let j = i; j < this._size - 1; j++) {
-						const from = (this._head + j + 1) & this._mask;
-						const to = (this._head + j) & this._mask;
-
-						this._buffer[to] = this._buffer[from];
-					}
-
-					this._tail = (this._tail - 1) & this._mask;
-					this._buffer[this._tail] = undefined;
-				}
-
-				this._size -= 1;
-
+				this._removeAtInternal(i);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * Removes the item at the specified index.
+	 *
+	 * @param index The index of the item to remove.
+	 *
+	 * @returns The removed item, or `undefined` if the index is out of bounds.
+	 */
+	public removeAt(index: number): T | undefined {
+		if (this._size === 0) {
+			return undefined;
+		}
+
+		let i = index;
+
+		if (i < 0) {
+			i += this._size;
+		}
+
+		if (i < 0 || i >= this._size) {
+			return undefined;
+		}
+
+		return this._removeAtInternal(i);
 	}
 
 	/**
@@ -382,6 +381,40 @@ export class Deque<T> {
 	 */
 	public *[Symbol.iterator](): IterableIterator<T> {
 		yield* this.values();
+	}
+
+	private _removeAtInternal(i: number): T | undefined {
+		const idx = (this._head + i) & this._mask;
+		const value = this._buffer[idx];
+
+		const leftCount = i;
+		const rightCount = this._size - 1 - i;
+
+		if (leftCount <= rightCount) {
+			for (let j = i; j > 0; j--) {
+				const from = (this._head + j - 1) & this._mask;
+				const to = (this._head + j) & this._mask;
+
+				this._buffer[to] = this._buffer[from];
+			}
+
+			this._buffer[this._head] = undefined;
+			this._head = (this._head + 1) & this._mask;
+		} else {
+			for (let j = i; j < this._size - 1; j++) {
+				const from = (this._head + j + 1) & this._mask;
+				const to = (this._head + j) & this._mask;
+
+				this._buffer[to] = this._buffer[from];
+			}
+
+			this._tail = (this._tail - 1) & this._mask;
+			this._buffer[this._tail] = undefined;
+		}
+
+		this._size -= 1;
+
+		return value;
 	}
 
 	private _grow(count: number): void {

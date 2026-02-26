@@ -270,6 +270,66 @@ describe('Deque', () => {
 		});
 	});
 
+	describe('removeAt', () => {
+		it('should return undefined when removing from empty', () => {
+			const d = new Deque<number>();
+			expect(d.removeAt(0)).toBeUndefined();
+			expect(d.removeAt(-1)).toBeUndefined();
+		});
+
+		it('should return undefined for out of bounds index', () => {
+			const d = new Deque<number>();
+			d.push(1, 2, 3);
+			expect(d.removeAt(3)).toBeUndefined();
+			expect(d.removeAt(-4)).toBeUndefined();
+			expect(d.toArray()).toEqual([1, 2, 3]);
+		});
+
+		it('should remove element from the front', () => {
+			const d = new Deque<number>();
+			d.push(1, 2, 3);
+			expect(d.removeAt(0)).toBe(1);
+			expect(d.toArray()).toEqual([2, 3]);
+		});
+
+		it('should remove element from the back', () => {
+			const d = new Deque<number>();
+			d.push(1, 2, 3);
+			expect(d.removeAt(2)).toBe(3);
+			expect(d.toArray()).toEqual([1, 2]);
+		});
+
+		it('should remove element from the middle', () => {
+			const d = new Deque<number>();
+			d.push(1, 2, 3, 4);
+			expect(d.removeAt(1)).toBe(2);
+			expect(d.toArray()).toEqual([1, 3, 4]);
+		});
+
+		it('should support negative index', () => {
+			const d = new Deque<number>();
+			d.push(1, 2, 3, 4);
+			expect(d.removeAt(-1)).toBe(4);
+			expect(d.toArray()).toEqual([1, 2, 3]);
+			expect(d.removeAt(-2)).toBe(2);
+			expect(d.toArray()).toEqual([1, 3]);
+		});
+
+		it('should work correctly after wrap-around', () => {
+			const d = new Deque<number>(4);
+			d.push(1, 2, 3, 4);
+			d.shift();
+			d.shift();
+			d.push(5, 6);
+			expect(d.toArray()).toEqual([3, 4, 5, 6]);
+
+			expect(d.removeAt(1)).toBe(4);
+			expect(d.toArray()).toEqual([3, 5, 6]);
+			expect(d.peekHead()).toBe(3);
+			expect(d.peekTail()).toBe(6);
+		});
+	});
+
 	describe('rotate', () => {
 		it('should do nothing on empty deque', () => {
 			const d = new Deque<number>();
