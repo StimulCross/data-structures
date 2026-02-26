@@ -13,7 +13,7 @@ export default defineConfig({
 			provider: 'v8',
 			reportsDirectory: './coverage',
 			include: ['packages/**/src/**/*.ts'],
-			exclude: ['**/src/index.ts'],
+			exclude: ['**/src/index.ts', 'packages/queue/src/queue.ts', 'packages/queue/src/queue-options.ts'],
 		},
 	},
 });

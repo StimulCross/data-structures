@@ -104,6 +104,22 @@ importers:
         specifier: workspace:*
         version: link:../../libs/typescript-config
 
+  packages/queue:
+    dependencies:
+      '@stimulcross/ds-binary-heap':
+        specifier: workspace:*
+        version: link:../binary-heap
+      '@stimulcross/ds-deque':
+        specifier: workspace:*
+        version: link:../deque
+    devDependencies:
+      eslint-config:
+        specifier: workspace:*
+        version: link:../../libs/eslint-config
+      typescript-config:
+        specifier: workspace:*
+        version: link:../../libs/typescript-config
+
 packages:
 
   '@babel/code-frame@7.29.0':
