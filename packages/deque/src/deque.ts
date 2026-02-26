@@ -257,6 +257,8 @@ export class Deque<T> {
 	/**
 	 * Removes the item at the specified index.
 	 *
+	 * If the index is negative, it counts from the end of the queue.
+	 *
 	 * Complexity: **O(n)**.
 	 *
 	 * @param index The index of the item to remove.
