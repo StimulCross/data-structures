@@ -147,6 +147,55 @@ export class BinaryHeap<T = number> {
 	}
 
 	/**
+	 * Removes an item from the heap.
+	 *
+	 * Complexity: **O(n)**.
+	 *
+	 * @param value The value to remove.
+	 *
+	 * @returns `true` if the item was removed, `false` otherwise.
+	 */
+	public remove(value: T): boolean {
+		const size = this.size;
+
+		if (size === 0) {
+			return false;
+		}
+
+		let idx: number | undefined;
+
+		for (let i = 0; i < size; i++) {
+			if (this._data[i] === value) {
+				idx = i;
+				break;
+			}
+		}
+
+		if (idx === undefined) {
+			return false;
+		}
+
+		const lastIdx = size - 1;
+
+		if (idx === lastIdx) {
+			this._data.pop();
+			return true;
+		}
+
+		this._data[idx] = this._data.pop()!;
+
+		const parentIdx = this._getParent(idx);
+
+		if (idx > 0 && this._comparator(this._data[idx], this._data[parentIdx]) < 0) {
+			this._siftUp(idx);
+		} else {
+			this._siftDown(idx);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Removes all elements from the heap.
 	 *
 	 * Complexity: **O(1)**.

@@ -185,6 +185,159 @@ describe('BinaryHeap', () => {
 		});
 	});
 
+	describe('remove', () => {
+		it('should return false when removing from empty heap', () => {
+			const heap = new BinaryHeap<number>();
+
+			const isRemoved = heap.remove(123);
+			expect(isRemoved).toBe(false);
+			expect(heap.isEmpty).toBe(true);
+			expect(heap.size).toBe(0);
+		});
+
+		it('should return false if value is not found', () => {
+			const heap = BinaryHeap.from([5, 3, 8, 1]);
+
+			const isRemoved = heap.remove(999);
+			expect(isRemoved).toBe(false);
+			expect(heap.size).toBe(4);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([8, 5, 3, 1]);
+		});
+
+		it('should remove the root value and keep heap valid', () => {
+			const heap = BinaryHeap.from([5, 3, 8, 1, 10, 2]);
+
+			const isRemoved = heap.remove(10);
+
+			expect(isRemoved).toBe(true);
+			expect(heap.size).toBe(5);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([8, 5, 3, 2, 1]);
+		});
+
+		it('should remove a leaf value and keep heap valid', () => {
+			const heap = BinaryHeap.from([5, 3, 8, 1, 10, 2]);
+
+			const isRemoved = heap.remove(1);
+			expect(isRemoved).toBe(true);
+			expect(heap.size).toBe(5);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([10, 8, 5, 3, 2]);
+		});
+
+		it('should remove an internal value and keep heap valid', () => {
+			const heap = BinaryHeap.from([5, 3, 8, 1, 10, 2]);
+
+			const isRemoved = heap.remove(5);
+			expect(isRemoved).toBe(true);
+			expect(heap.size).toBe(5);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([10, 8, 3, 2, 1]);
+		});
+
+		it('should remove only one occurrence when duplicates exist', () => {
+			const heap = BinaryHeap.from([5, 5, 5, 2, 8]);
+
+			const isRemoved = heap.remove(5);
+			expect(isRemoved).toBe(true);
+			expect(heap.size).toBe(4);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([8, 5, 5, 2]);
+		});
+
+		it('should work with custom comparator (Min-Heap)', () => {
+			const heap = BinaryHeap.from([5, 3, 8, 1, 10, 2], (a, b) => a - b);
+
+			const isRemoved = heap.remove(3);
+			expect(isRemoved).toBe(true);
+			expect(heap.size).toBe(5);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([1, 2, 5, 8, 10]);
+		});
+
+		it('should remove last element directly when found at last index (idx === lastIdx)', () => {
+			const heap = new BinaryHeap<number>();
+			heap.push(10);
+			heap.push(9);
+			heap.push(8);
+
+			heap.push(-1);
+
+			const before = heap.toArray();
+			expect(before.at(-1)).toBe(-1);
+
+			const isRemoved = heap.remove(-1);
+			expect(isRemoved).toBe(true);
+
+			const after = heap.toArray();
+			expect(after).toHaveLength(3);
+			expect(after).not.toContain(-1);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([10, 9, 8]);
+		});
+
+		it('should sift up when replacement is better than its parent', () => {
+			const heap = BinaryHeap.from([50, 30, 40, 20, 10, 35, 36]);
+			expect(heap.toArray()).toEqual([50, 30, 40, 20, 10, 35, 36]);
+
+			const isRemoved = heap.remove(20);
+			expect(isRemoved).toBe(true);
+
+			expect(heap.toArray()).toEqual([50, 36, 40, 30, 10, 35]);
+
+			const extracted: number[] = [];
+
+			while (!heap.isEmpty) {
+				extracted.push(heap.pop()!);
+			}
+
+			expect(extracted).toEqual([50, 40, 36, 35, 30, 10]);
+		});
+	});
+
 	describe('Custom Comparator', () => {
 		it('should work with custom compare function for Min-Heap behavior', () => {
 			const minHeap = new BinaryHeap<number>((a, b) => a - b);
