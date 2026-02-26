@@ -47,6 +47,8 @@ export class BinaryHeap<T = number> {
 
 	/**
 	 * The number of items in the heap.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public get size(): number {
 		return this._data.length;
@@ -54,6 +56,8 @@ export class BinaryHeap<T = number> {
 
 	/**
 	 * Checks whether the heap is empty.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public get isEmpty(): boolean {
 		return this._data.length === 0;
@@ -83,10 +87,10 @@ export class BinaryHeap<T = number> {
 
 	/**
 	 * Removes the root element from the heap and returns it.
+	 *
 	 * Returns `undefined` if the heap is empty.
 	 *
 	 * Complexity: **O(log n)**.
-	 *
 	 */
 	public pop(): T | undefined {
 		if (this.isEmpty) {
@@ -216,7 +220,7 @@ export class BinaryHeap<T = number> {
 	/**
 	 * Returns an **unsorted** iterator of the elements in the heap.
 	 *
-	 * Complexity: **O(n)** for all items in the heap.
+	 * Complexity: **O(n)**.
 	 */
 	public *[Symbol.iterator](): IterableIterator<T> {
 		for (const item of this._data) {
