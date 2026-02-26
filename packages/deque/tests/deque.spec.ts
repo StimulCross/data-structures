@@ -58,7 +58,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('peeking and at()', () => {
+	describe('Peeking and at()', () => {
 		it('should return undefined when peeking empty deque', () => {
 			const d = new Deque<number>();
 			expect(d.peekHead()).toBeUndefined();
@@ -97,68 +97,70 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('insertion and removal (single elements)', () => {
-		it('should return undefined when removing from empty deque', () => {
-			const d = new Deque<number>();
-			expect(d.shift()).toBeUndefined();
-			expect(d.pop()).toBeUndefined();
+	describe('Insertion and removal (single elements)', () => {
+		describe('Single elements', () => {
+			it('should return undefined when removing from empty deque', () => {
+				const d = new Deque<number>();
+				expect(d.shift()).toBeUndefined();
+				expect(d.pop()).toBeUndefined();
+			});
+
+			it('should behave as FIFO queue (push/shift)', () => {
+				const d = new Deque<number>();
+				d.push(1);
+				d.push(2);
+				d.push(3);
+				expect(d.shift()).toBe(1);
+				expect(d.shift()).toBe(2);
+				expect(d.shift()).toBe(3);
+				expect(d.isEmpty).toBe(true);
+			});
+
+			it('should behave as LIFO stack (push/pop)', () => {
+				const d = new Deque<number>();
+				d.push(1);
+				d.push(2);
+				d.push(3);
+				expect(d.pop()).toBe(3);
+				expect(d.pop()).toBe(2);
+				expect(d.pop()).toBe(1);
+				expect(d.isEmpty).toBe(true);
+			});
+
+			it('should handle unshift and pop correctly', () => {
+				const d = new Deque<number>();
+				d.unshift(1);
+				d.unshift(2);
+				expect(d.pop()).toBe(1);
+				expect(d.pop()).toBe(2);
+			});
 		});
 
-		it('should behave as FIFO queue (push/shift)', () => {
-			const d = new Deque<number>();
-			d.push(1);
-			d.push(2);
-			d.push(3);
-			expect(d.shift()).toBe(1);
-			expect(d.shift()).toBe(2);
-			expect(d.shift()).toBe(3);
-			expect(d.isEmpty).toBe(true);
-		});
+		describe('Multiple elements', () => {
+			it('should push multiple elements in correct order', () => {
+				const d = new Deque<number>();
+				d.push(1, 2, 3);
+				expect(d.toArray()).toEqual([1, 2, 3]);
+			});
 
-		it('should behave as LIFO stack (push/pop)', () => {
-			const d = new Deque<number>();
-			d.push(1);
-			d.push(2);
-			d.push(3);
-			expect(d.pop()).toBe(3);
-			expect(d.pop()).toBe(2);
-			expect(d.pop()).toBe(1);
-			expect(d.isEmpty).toBe(true);
-		});
+			it('should unshift multiple elements in correct order', () => {
+				const d = new Deque<number>();
+				d.unshift(1, 2, 3);
+				expect(d.toArray()).toEqual([1, 2, 3]);
+				d.unshift(4, 5);
+				expect(d.toArray()).toEqual([4, 5, 1, 2, 3]);
+			});
 
-		it('should handle unshift and pop correctly', () => {
-			const d = new Deque<number>();
-			d.unshift(1);
-			d.unshift(2);
-			expect(d.pop()).toBe(1);
-			expect(d.pop()).toBe(2);
+			it('should safely ignore empty push/unshift', () => {
+				const d = new Deque<number>();
+				d.push();
+				d.unshift();
+				expect(d.isEmpty).toBe(true);
+			});
 		});
 	});
 
-	describe('insertion (multiple elements)', () => {
-		it('should push multiple elements in correct order', () => {
-			const d = new Deque<number>();
-			d.push(1, 2, 3);
-			expect(d.toArray()).toEqual([1, 2, 3]);
-		});
-
-		it('should unshift multiple elements in correct order', () => {
-			const d = new Deque<number>();
-			d.unshift(1, 2, 3);
-			expect(d.toArray()).toEqual([1, 2, 3]);
-			d.unshift(4, 5);
-			expect(d.toArray()).toEqual([4, 5, 1, 2, 3]);
-		});
-
-		it('should safely ignore empty push/unshift', () => {
-			const d = new Deque<number>();
-			d.push();
-			d.unshift();
-			expect(d.isEmpty).toBe(true);
-		});
-	});
-
-	describe('buffer mechanics (wrap-around and growth)', () => {
+	describe('Buffer mechanics (wrap-around and growth)', () => {
 		it('should maintain order during wrap-around', () => {
 			const d = new Deque<number>(4);
 			d.push(1, 2, 3, 4);
@@ -209,7 +211,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('remove by value', () => {
+	describe('Remove by value', () => {
 		it('should return false when removing from empty', () => {
 			const d = new Deque<number>();
 			expect(d.remove(1)).toBe(false);
@@ -270,7 +272,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('removeAt', () => {
+	describe('Remove by index', () => {
 		it('should return undefined when removing from empty', () => {
 			const d = new Deque<number>();
 			expect(d.removeAt(0)).toBeUndefined();
@@ -330,7 +332,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('rotate', () => {
+	describe('Rotate', () => {
 		it('should do nothing on empty deque', () => {
 			const d = new Deque<number>();
 			d.rotate(5);
@@ -365,7 +367,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('clear', () => {
+	describe('Clear', () => {
 		it('should clear all elements without shrinking by default', () => {
 			const d = new Deque<number>(4);
 			d.push(1, 2, 3, 4, 5);
@@ -383,7 +385,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('conversions', () => {
+	describe('Conversions', () => {
 		it('should convert to array without mutating deque', () => {
 			const d = new Deque<number>();
 			d.push(1, 2, 3);
@@ -399,7 +401,7 @@ describe('Deque', () => {
 		});
 	});
 
-	describe('iterators', () => {
+	describe('Iterators', () => {
 		it('should iterate via Symbol.iterator', () => {
 			const d = new Deque<number>();
 			d.push(1, 2, 3);
