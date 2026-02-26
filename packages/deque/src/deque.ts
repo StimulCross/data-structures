@@ -42,6 +42,8 @@ export class Deque<T> {
 	 *
 	 * Note: If iterable is a `Map`, the deque is created from `map.values()`.
 	 *
+	 * Complexity: **O(n)** (amortized), where `n` is the number of elements in `iterable`.
+	 *
 	 * @param iterable The iterable to create the deque from.
 	 */
 	public static from<T>(iterable: Iterable<T>): Deque<T> {
@@ -67,6 +69,8 @@ export class Deque<T> {
 
 	/**
 	 * The number of items in the deque.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public get size(): number {
 		return this._size;
@@ -74,6 +78,8 @@ export class Deque<T> {
 
 	/**
 	 * Checks if the deque is empty.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public get isEmpty(): boolean {
 		return this._size === 0;
@@ -81,6 +87,8 @@ export class Deque<T> {
 
 	/**
 	 * The current capacity of the deque.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public get capacity(): number {
 		return this._capacity;
@@ -88,6 +96,8 @@ export class Deque<T> {
 
 	/**
 	 * Peeks at the head of the deque without removing it.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public peekHead(): T | undefined {
 		return this._buffer[this._head];
@@ -95,6 +105,8 @@ export class Deque<T> {
 
 	/**
 	 * Peeks at the tail of the deque without removing it.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public peekTail(): T | undefined {
 		return this._buffer[(this._tail - 1) & this._mask];
@@ -104,6 +116,8 @@ export class Deque<T> {
 	 * Gets the item at the specified index.
 	 *
 	 * Returns `undefined` if the index is out of bounds.
+	 *
+	 * Complexity: **O(1)**.
 	 *
 	 * @param index The index of the item to get.
 	 */
@@ -127,6 +141,11 @@ export class Deque<T> {
 
 	/**
 	 * Adds one or more values to the end of the deque.
+	 *
+	 * Complexity: **O(k)** (amortized), where `k` is the number of values to add.
+	 * **O(k + n)** in the worst case if the buffer needs to be grown.
+	 *
+	 * @param values The values to add to the deque.
 	 */
 	public push(...values: T[]): void {
 		const count = values.length;
@@ -149,6 +168,8 @@ export class Deque<T> {
 
 	/**
 	 * Removes and returns the tail of the deque.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public pop(): T | undefined {
 		if (this._size === 0) {
@@ -165,6 +186,8 @@ export class Deque<T> {
 
 	/**
 	 * Removes and returns the head of the deque.
+	 *
+	 * Complexity: **O(1)**.
 	 */
 	public shift(): T | undefined {
 		if (this._size === 0) {
@@ -181,6 +204,11 @@ export class Deque<T> {
 
 	/**
 	 * Adds one or more values to the beginning of the deque.
+	 *
+	 * Complexity: **O(k)** (amortized), where `k` is the number of values to add.
+	 * **O(k + n)** in the worst case if the buffer needs to be grown.
+	 *
+	 * @param values The values to add to the deque.
 	 */
 	public unshift(...values: T[]): void {
 		const count = values.length;
@@ -205,6 +233,8 @@ export class Deque<T> {
 	/**
 	 * Removes the first occurrence of a value from the deque.
 	 *
+	 * Complexity: **O(n)**.
+	 *
 	 * @returns `true` if the value was found and removed, `false` otherwise.
 	 */
 	public remove(value: T): boolean {
@@ -226,6 +256,8 @@ export class Deque<T> {
 
 	/**
 	 * Removes the item at the specified index.
+	 *
+	 * Complexity: **O(n)**.
 	 *
 	 * @param index The index of the item to remove.
 	 *
@@ -253,6 +285,8 @@ export class Deque<T> {
 	 * Rotates the deque by the specified number of steps.
 	 *
 	 * If the number of steps is negative, the deque will be rotated in the opposite direction (left).
+	 *
+	 * Complexity: **O(n)**.
 	 *
 	 * @param steps The number of steps to rotate the deque.
 	 */
@@ -287,6 +321,8 @@ export class Deque<T> {
 	/**
 	 * Clears the deque.
 	 *
+	 * Complexity: **O(n)**.
+	 *
 	 * @param shouldShrink If `true`, the deque will be shrunk to its initial capacity.
 	 */
 	public clear(shouldShrink?: boolean): void {
@@ -307,6 +343,8 @@ export class Deque<T> {
 
 	/**
 	 * Converts the deque to an array.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public toArray(): T[] {
 		const result = new Array<T>(this._size);
@@ -320,6 +358,8 @@ export class Deque<T> {
 
 	/**
 	 * Converts the deque to a reversed array.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public toReversedArray(): T[] {
 		const result = new Array<T>(this._size);
@@ -333,6 +373,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the keys (indexes) of the deque.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *keys(): IterableIterator<number> {
 		for (let i = 0; i < this._size; i++) {
@@ -342,6 +384,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the values of the deque.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *values(): IterableIterator<T> {
 		for (let i = 0; i < this._size; i++) {
@@ -352,6 +396,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the entries of the deque.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *entries(): IterableIterator<[number, T]> {
 		for (let i = 0; i < this._size; i++) {
@@ -362,6 +408,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the keys (indexes) of the deque in reverse order.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *keysReverse(): IterableIterator<number> {
 		for (let i = this._size - 1; i >= 0; i--) {
@@ -371,6 +419,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the values of the deque in reverse order.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *valuesReverse(): IterableIterator<T> {
 		for (let i = 0; i < this._size; i++) {
@@ -381,6 +431,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the entries of the deque in reverse order.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *entriesReverse(): IterableIterator<[number, T]> {
 		for (let i = this._size - 1; i >= 0; i--) {
@@ -391,6 +443,8 @@ export class Deque<T> {
 
 	/**
 	 * Returns an iterator over the deque.
+	 *
+	 * Complexity: **O(n)**.
 	 */
 	public *[Symbol.iterator](): IterableIterator<T> {
 		yield* this.values();
