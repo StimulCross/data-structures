@@ -1,14 +1,14 @@
 {
-  "packages": [
-    "packages/*",
-    "libs/*"
-  ],
-  "version": "0.1.0",
-  "npmClient": "pnpm",
-  "command": {
-    "publish": {
-      "npmClient": "npm"
-    }
-  },
-  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+	"$schema": "node_modules/lerna/schemas/lerna-schema.json",
+	"version": "independent",
+	"packages": [
+		"packages/*",
+		"libs/*"
+	],
+	"npmClient": "pnpm",
+	"command": {
+		"publish": {
+			"npmClient": "npm"
+		}
+	}
 }
