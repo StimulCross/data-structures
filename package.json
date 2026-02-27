@@ -31,7 +31,8 @@
 		"eslint-configs": "pnpm --filter=eslint-config",
 		"typescript-config": "pnpm --filter=typescript-config",
 		"deque": "pnpm --filter=@stimulcross/ds-deque",
-		"binary-heap": "pnpm --filter=@stimulcross/ds-binary-heap"
+		"binary-heap": "pnpm --filter=@stimulcross/ds-binary-heap",
+		"queue": "pnpm --filter=@stimulcross/ds-queue"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^20.4.2",
