@@ -26,6 +26,51 @@ describe('PolicyPriorityQueue', () => {
 		});
 	});
 
+	describe('Getters and State', () => {
+		it('should return the correct size', () => {
+			const queue = new PolicyPriorityQueue<string>();
+
+			expect(queue.size).toBe(0);
+
+			queue.enqueue('task1', Priority.Normal);
+			queue.enqueue('task2', Priority.High);
+
+			expect(queue.size).toBe(2);
+		});
+
+		it('should return the correct isEmpty state', () => {
+			const queue = new PolicyPriorityQueue<string>();
+
+			expect(queue.isEmpty).toBe(true);
+
+			queue.enqueue('task-1');
+			queue.enqueue('task-2');
+
+			expect(queue.isEmpty).toBe(false);
+
+			queue.dequeue();
+			queue.dequeue();
+
+			expect(queue.isEmpty).toBe(true);
+		});
+
+		it('should return the correct isFull state', () => {
+			const queue = new PolicyPriorityQueue<string>({ capacity: 2 });
+
+			expect(queue.isFull).toBe(false);
+
+			queue.enqueue('task-1');
+			queue.enqueue('task-2');
+
+			expect(queue.isFull).toBe(true);
+
+			queue.dequeue();
+			queue.dequeue();
+
+			expect(queue.isFull).toBe(false);
+		});
+	});
+
 	describe('Enqueue Operations', () => {
 		it('should enqueue items and update size appropriately', () => {
 			const queue = new PolicyPriorityQueue<string>();
