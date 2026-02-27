@@ -3,7 +3,9 @@
 	"version": "0.0.1",
 	"description": "Binary Heap implementation for TypeScript.",
 	"keywords": [
-		"deque"
+		"binary-heap",
+		"data-structure",
+		"heap"
 	],
 	"author": "StimulCross <stimulcross@gmail.com>",
 	"license": "MIT",

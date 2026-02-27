@@ -3,7 +3,10 @@
 	"version": "0.0.1",
 	"description": "FIFO and priority queue implementations for TypeScript.",
 	"keywords": [
-		"deque"
+		"queue",
+		"data-structure",
+		"fifo",
+		"priority-queue"
 	],
 	"author": "StimulCross <stimulcross@gmail.com>",
 	"license": "MIT",

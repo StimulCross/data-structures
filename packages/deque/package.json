@@ -3,7 +3,10 @@
 	"version": "0.0.1",
 	"description": "Dequeue implementation for TypeScript.",
 	"keywords": [
-		"deque"
+		"deque",
+		"data-structure",
+		"double-ended-queue",
+		"ring-buffer"
 	],
 	"author": "StimulCross <stimulcross@gmail.com>",
 	"license": "MIT",
