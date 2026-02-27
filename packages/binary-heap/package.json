@@ -1,6 +1,6 @@
 {
 	"name": "@stimulcross/ds-binary-heap",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Binary Heap implementation for TypeScript.",
 	"keywords": [
 		"binary-heap",

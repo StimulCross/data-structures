@@ -1,6 +1,6 @@
 {
 	"name": "@stimulcross/ds-queue",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "FIFO and priority queue implementations for TypeScript.",
 	"keywords": [
 		"queue",
@@ -51,8 +51,8 @@
 		"!lib/**/*.js.map"
 	],
 	"dependencies": {
-		"@stimulcross/ds-deque": "workspace:*",
-		"@stimulcross/ds-binary-heap": "workspace:*"
+		"@stimulcross/ds-binary-heap": "workspace:*",
+		"@stimulcross/ds-deque": "workspace:*"
 	},
 	"devDependencies": {
 		"eslint-config": "workspace:*",
