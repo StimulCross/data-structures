@@ -146,6 +146,8 @@ export class PolicyPriorityQueue<T = unknown> {
 	 * Complexity: **O(n)**.
 	 */
 	public clear(): void {
+		this._policy.clear?.();
+
 		for (const queue of this._queues.values()) {
 			queue.clear();
 		}
