@@ -1,5 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { type SelectionPolicy, PolicyPriorityQueue, Priority } from '../src/index.js';
+import { FifoQueue } from '@stimulcross/ds-queue';
+import { describe, expect, it, vi } from 'vitest';
+import { PolicyPriorityQueue, Priority, type SelectionPolicy } from '../src/index.js';
 
 describe('PolicyPriorityQueue', () => {
 	describe('Initialization and Configuration', () => {
@@ -109,6 +110,35 @@ describe('PolicyPriorityQueue', () => {
 
 			expect(queue.enqueue('task3', Priority.High, true)).toBe(true);
 			expect(queue.size).toBe(2);
+		});
+
+		it('should return queue for specified priority', () => {
+			const queue = new PolicyPriorityQueue<string>();
+
+			const queueLowest = queue.getQueue(Priority.Lowest);
+			expect(queueLowest).toBeInstanceOf(FifoQueue);
+			queue.enqueue('task-lowest', Priority.Lowest);
+			expect(queueLowest.size).toBe(1);
+
+			const queueLow = queue.getQueue(Priority.Low);
+			expect(queueLow).toBeInstanceOf(FifoQueue);
+			queue.enqueue('task-low', Priority.Low);
+			expect(queueLow.size).toBe(1);
+
+			const queueNormal = queue.getQueue(Priority.Normal);
+			expect(queueNormal).toBeInstanceOf(FifoQueue);
+			queue.enqueue('task-normal', Priority.Normal);
+			expect(queueNormal.size).toBe(1);
+
+			const queueHigh = queue.getQueue(Priority.High);
+			expect(queueHigh).toBeInstanceOf(FifoQueue);
+			queue.enqueue('task-high', Priority.High);
+			expect(queueHigh.size).toBe(1);
+
+			const queueHighest = queue.getQueue(Priority.Highest);
+			expect(queueHighest).toBeInstanceOf(FifoQueue);
+			queue.enqueue('task-highest', Priority.Highest);
+			expect(queueHighest.size).toBe(1);
 		});
 	});
 

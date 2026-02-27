@@ -84,6 +84,17 @@ export class PolicyPriorityQueue<T = unknown> {
 	}
 
 	/**
+	 * Returns the queue associated with the specified priority.
+	 *
+	 * Complexity: **O(1)**.
+	 *
+	 * @param priority The priority of the queue.
+	 */
+	public getQueue(priority: Priority): Queue<T> {
+		return this._queues.get(priority)!;
+	}
+
+	/**
 	 * Returns an entry from the queue without removing it.
 	 *
 	 * This method uses a selection policy to determine which queue to use.
