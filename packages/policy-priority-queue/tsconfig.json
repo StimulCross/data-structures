@@ -4,8 +4,7 @@
 		"rootDir": "src",
 		"outDir": "lib",
 		"paths": {
-			"@stimulcross/ds-deque": ["../deque/src"],
-			"@stimulcross/ds-binary-heap": ["../binary-heap/src"]
+			"@stimulcross/ds-queue": ["../queue/src"]
 		}
 	},
 	"include": ["src"],
