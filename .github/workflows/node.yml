@@ -1,81 +1,108 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+            - name: Install PNPM
+              uses: pnpm/action-setup@v4
+              with:
+                  run_install: false
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: pnpm
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
+            - name: Install deps
+              run: pnpm install --frozen-lockfile
 
-      - name: Install deps
-        run: pnpm install
+            - name: Build
+              run: pnpm run build
 
-      - name: Build
-        run: pnpm run build
+            - name: Save build assets
+              uses: actions/upload-artifact@v4
+              with:
+                  name: lib-folders
+                  path: packages/*/lib
+                  retention-days: 1
 
-      - name: Lint
-        run: pnpm run lint
+    checks:
+        needs: [build]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Check formatting
-        run: pnpm run format:check
+            - name: Install PNPM
+              uses: pnpm/action-setup@v4
+              with:
+                  run_install: false
 
-      - name: Archive build assets
-        run: tar cvf build-result.tar packages/*/lib
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: pnpm
 
-      - name: Save build assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-result
-          path: build-result.tar
-  test:
-    strategy:
-      matrix:
-        node-version: [ 20, 22, 24 ]
+            - name: Install deps
+              run: pnpm install --frozen-lockfile
 
-    needs: [ build ]
-    runs-on: ubuntu-latest
+            - name: Load build assets
+              uses: actions/download-artifact@v4
+              with:
+                  name: lib-folders
+                  path: packages
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+            - name: Check formatting
+              run: pnpm run format:check
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
+            - name: Check types
+              run: pnpm run check-types
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Lint
+              run: pnpm run lint
 
-      - name: Install deps
-        run: pnpm install
+    test:
+        needs: [build]
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20, 22, 24]
 
-      - name: Load build assets
-        uses: actions/download-artifact@v4
-        with:
-          name: build-result
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Unarchive build assets
-        run: tar xvf build-result.tar
+            - name: Install PNPM
+              uses: pnpm/action-setup@v4
+              with:
+                  run_install: false
 
-      - run: pnpm run test
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: pnpm
+
+            - name: Install deps
+              run: pnpm install --frozen-lockfile
+
+            - name: Load build assets
+              uses: actions/download-artifact@v4
+              with:
+                  name: lib-folders
+                  path: packages
+
+            - name: Run tests
+              run: pnpm run test
