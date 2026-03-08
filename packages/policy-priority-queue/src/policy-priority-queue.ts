@@ -10,7 +10,6 @@ import { Priority } from './priority.js';
  * @template T The type of entries in the queue.
  */
 export class PolicyPriorityQueue<T = unknown> {
-	private _size: number = 0;
 	private readonly _queues: Map<Priority, Queue<T>>;
 	private readonly _policy: SelectionPolicy<T>;
 	private readonly _capacity: number;
@@ -53,7 +52,13 @@ export class PolicyPriorityQueue<T = unknown> {
 	 * Complexity: **O(1)**.
 	 */
 	public get size(): number {
-		return this._size;
+		let size = 0;
+
+		for (const queue of this._queues.values()) {
+			size += queue.size;
+		}
+
+		return size;
 	}
 
 	/**
@@ -62,7 +67,7 @@ export class PolicyPriorityQueue<T = unknown> {
 	 * Complexity: **O(1)**.
 	 */
 	public get isEmpty(): boolean {
-		return this._size === 0;
+		return this.size === 0;
 	}
 
 	/**
@@ -71,7 +76,7 @@ export class PolicyPriorityQueue<T = unknown> {
 	 * Complexity: **O(1)**.
 	 */
 	public get isFull(): boolean {
-		return this._size >= this._capacity;
+		return this.size >= this._capacity;
 	}
 
 	/**
@@ -125,7 +130,6 @@ export class PolicyPriorityQueue<T = unknown> {
 		}
 
 		const isEnqueued = queue.enqueue(entry, true);
-		this._size += 1;
 
 		return isEnqueued;
 	}
@@ -144,7 +148,6 @@ export class PolicyPriorityQueue<T = unknown> {
 		const entry = selectedQueue?.dequeue();
 
 		if (entry) {
-			this._size -= 1;
 			return entry;
 		}
 
@@ -162,8 +165,6 @@ export class PolicyPriorityQueue<T = unknown> {
 		for (const queue of this._queues.values()) {
 			queue.clear();
 		}
-
-		this._size = 0;
 	}
 
 	/**
