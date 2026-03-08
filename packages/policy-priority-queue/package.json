@@ -39,7 +39,9 @@
 		"lint:fix": "eslint src tests --fix",
 		"format:check": "prettier --check src",
 		"format:fix": "prettier --write src",
-		"check-types": "tsc -p tsconfig.json --noEmit"
+		"check-types": "tsc -p tsconfig.json --noEmit",
+		"preversion": "pnpm run rebuild && pnpm run format:check && pnpm run lint",
+		"prepublishOnly": "pnpm run rebuild && pnpm run format:check && pnpm run lint"
 	},
 	"files": [
 		"LICENSE",
