@@ -1,4 +1,5 @@
 +sync:.megaignore
+-d:.turbo
 -d:node_modules
 -d:lib
 -f:yarn.lock
