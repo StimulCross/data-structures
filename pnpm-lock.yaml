@@ -104,6 +104,15 @@ importers:
         specifier: workspace:*
         version: link:../../libs/typescript-config
 
+  packages/doubly-linked-list:
+    devDependencies:
+      eslint-config:
+        specifier: workspace:*
+        version: link:../../libs/eslint-config
+      typescript-config:
+        specifier: workspace:*
+        version: link:../../libs/typescript-config
+
   packages/policy-priority-queue:
     dependencies:
       '@stimulcross/ds-queue':

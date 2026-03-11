@@ -32,6 +32,7 @@
 		"typescript-config": "pnpm --filter=typescript-config",
 		"deque": "pnpm --filter=@stimulcross/ds-deque",
 		"binary-heap": "pnpm --filter=@stimulcross/ds-binary-heap",
+		"doubly-linked-list": "pnpm --filter=@stimulcross/ds-doubly-linked-list",
 		"queue": "pnpm --filter=@stimulcross/ds-queue",
 		"policy-priority-queue": "pnpm --filter=@stimulcross/ds-policy-priority-queue"
 	},
